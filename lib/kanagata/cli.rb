@@ -14,9 +14,9 @@ module Kanagata
 
     option :config, default: '.kanagata'
     desc 'generate target', 'generate files'
-    def generate(target)
+    def generate(target, *attributes)
       begin
-        generator = Kanagata::Generator.new(target, options[:config])
+        generator = Kanagata::Generator.new(target, options[:config], attributes)
         generator.generate
       rescue => e
         say(e.message, :red)

@@ -4,11 +4,15 @@ require 'fileutils'
 
 module Kanagata
   class Base
-    def initialize(target, config_file)
+    def initialize(target, config_file, attributes = [])
       config = load_and_validate(target, config_file)
       @templates     = config['templates']
       @attributes    = config['attributes'] || {}
       @templates_dir = config['templates_dir'].nil? ? File.join(File.dirname(expand_path), 'kanagata') : File.expand_path(config['templates_dir'])
+      attributes.each do |value|
+        k, v = value.split(':')
+        @attributes[k] = v
+      end
     end
 
     private
