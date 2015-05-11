@@ -4,8 +4,12 @@ module Kanagata
   class CLI < Thor
     desc 'init', 'generate kanagata skelton files'
     def init(target = 'target')
-      skelton = Kanagata::Skelton.new(target)
-      skelton.generate
+      begin
+        skelton = Kanagata::Skelton.new(target)
+        skelton.generate
+      rescue => e
+        say(e.message, :red)
+      end
     end
 
     option :config, default: '.kanagata'
