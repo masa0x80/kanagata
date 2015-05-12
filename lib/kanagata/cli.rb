@@ -25,9 +25,9 @@ module Kanagata
 
     option :config, default: '.kanagata'
     desc 'destroy target', 'destroy files'
-    def destroy(target)
+    def destroy(target, *attributes)
       begin
-        destroyer = Kanagata::Destroyer.new(target, options[:config])
+        destroyer = Kanagata::Destroyer.new(target, options[:config], attributes)
         destroyer.destroy
       rescue => e
         say(e.message, :red)
