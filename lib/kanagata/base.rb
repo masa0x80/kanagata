@@ -1,11 +1,13 @@
 require 'yaml'
 require 'erubis'
+require 'pathname'
 require 'fileutils'
 
 module Kanagata
   class Base
     def initialize(target, config_file, attributes = [])
       config = load_and_validate(target, config_file)
+      @pwd           = File.expand_path('.')
       @templates     = config['templates']
       @attributes    = config['attributes'] || {}
       @templates_dir = config['templates_dir'].nil? ? File.join(File.dirname(expand_path), 'kanagata') : File.expand_path(config['templates_dir'])
@@ -29,6 +31,14 @@ module Kanagata
 
     def validate(hash, key)
       raise "Error: config file format is invalid -- '#{key}' is not found." unless hash.key?(key)
+    end
+
+    def relative_path_of(file)
+      Pathname.new(file).relative_path_from(Pathname.new(@pwd))
+    end
+
+    def info(text)
+      puts "\t#{text}"
     end
   end
 end
