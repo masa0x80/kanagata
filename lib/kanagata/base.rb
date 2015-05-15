@@ -10,7 +10,7 @@ module Kanagata
       @pwd           = File.expand_path('.')
       @templates     = config['templates']
       @attributes    = config['attributes'] || {}
-      @templates_dir = config['templates_dir'].nil? ? File.join(File.dirname(expand_path), 'kanagata') : File.expand_path(config['templates_dir'])
+      @templates_dir = config.key?('templates_dir') ? File.expand_path(config['templates_dir']) : File.join(@pwd, 'kanagata')
       attributes.each do |value|
         k, v = value.split(':')
         @attributes[k] = v
