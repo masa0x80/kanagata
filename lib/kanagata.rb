@@ -1,6 +1,7 @@
 require "kanagata/version"
 require "kanagata/cli"
 require "kanagata/skelton"
+require 'kanagata/util'
 require "kanagata/base"
 require "kanagata/generator"
 require "kanagata/destroyer"
