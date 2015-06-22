@@ -8,15 +8,15 @@ module Kanagata
         if File.exist?(output_file)
           info "Already exists: #{relative_path_of(output_file)}"
         else
-          File.open(output_file, 'w') do |file|
-            begin
+          begin
+            File.open(output_file, 'w') do |file|
               erubis = Erubis::Eruby.new(File.read(File.join(@templates_dir, "#{File.basename(template['path'])}.erb")))
               file.print erubis.result(@attributes)
               info "create     #{relative_path_of(output_file)}"
-            rescue => e
-              FileUtils.rm(output_file)
-              raise "Error: create #{relative_path_of(output_file)}"
             end
+          rescue => e
+            FileUtils.rm(output_file)
+            raise "Error: create #{relative_path_of(output_file)}"
           end
         end
       end
