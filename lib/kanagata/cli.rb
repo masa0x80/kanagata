@@ -3,10 +3,9 @@ require 'thor'
 module Kanagata
   class CLI < Thor
     desc 'init', 'generate kanagata skelton files'
-    def init(target = 'target')
+    def init(target = 'sample')
       begin
         skelton = Kanagata::Skelton.new(target)
-        skelton.generate
       rescue => e
         say(e.message, :red)
       end
