@@ -2,14 +2,7 @@ require 'spec_helper'
 require 'fileutils'
 require 'tmpdir'
 
-module PatchedString
-  refine String do
-    def ~
-      mergin = scan(/^ +/).map(&:size).min
-      gsub(/^ {#{mergin}}/, '')
-    end
-  end
-end
+include PatchedString
 using PatchedString
 
 describe Kanagata::Generator do
@@ -62,7 +55,9 @@ describe Kanagata::Generator do
       EOF
       File.write(File.join(@tmpdir, 'kanagata', 'hoge.yml.erb'), template_body1)
       File.write(File.join(@tmpdir, 'kanagata', 'fuga.yml.erb'), template_body2)
-      @generator.generate
+      KanagataTest.silence do
+        @generator.generate
+      end
       actual   = File.read(File.join(@tmpdir, 'hoge.yml'))
       expected = ~<<-"EOF"
         template1:
@@ -85,9 +80,11 @@ describe Kanagata::Generator do
       EOF
       File.write(File.join(@tmpdir, 'kanagata', 'hoge.yml.erb'), template_body)
       FileUtils.touch(File.join(@tmpdir, 'hoge.yml'))
-      expect {
-        @generator.generate
-      }.to raise_error
+      KanagataTest.silence do
+        expect {
+          @generator.generate
+        }.to raise_error
+      end
       expect(File.exist?(File.join(@tmpdir, 'hoge.yml'))).to eq true
     end
 
@@ -97,9 +94,11 @@ describe Kanagata::Generator do
           key: <%= unknown_key %>
       EOF
       File.write(File.join(@tmpdir, 'kanagata', 'hoge.yml.erb'), template_body)
-      expect {
-        @generator.generate
-      }.to raise_error
+      KanagataTest.silence do
+        expect {
+          @generator.generate
+        }.to raise_error
+      end
       expect(File.exist?(File.join(@tmpdir, 'hoge.yml'))).to eq false
     end
   end

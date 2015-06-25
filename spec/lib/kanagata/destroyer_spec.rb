@@ -2,14 +2,7 @@ require 'spec_helper'
 require 'fileutils'
 require 'tmpdir'
 
-module PatchedString
-  refine String do
-    def ~
-      mergin = scan(/^ +/).map(&:size).min
-      gsub(/^ {#{mergin}}/, '')
-    end
-  end
-end
+include PatchedString
 using PatchedString
 
 describe Kanagata::Destroyer do
