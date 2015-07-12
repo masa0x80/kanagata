@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    kanagata (0.0.1)
+    kanagata (0.1.0)
       erubis
       thor
 

@@ -2,7 +2,7 @@ require 'thor'
 
 module Kanagata
   class CLI < Thor
-    desc 'init', 'generate kanagata skelton files'
+    desc 'init', 'Generate sample recipe and template files'
     def init(target = 'sample')
       begin
         skelton = Kanagata::Skelton.new(target)
@@ -12,7 +12,7 @@ module Kanagata
     end
 
     option :config, default: '.kanagata'
-    desc 'generate target', 'generate files'
+    desc 'generate [RECIPE_NAME]', 'Generate files based on recipe and template files'
     def generate(target, *attributes)
       begin
         generator = Kanagata::Generator.new(target, options[:config], attributes)
@@ -23,7 +23,7 @@ module Kanagata
     end
 
     option :config, default: '.kanagata'
-    desc 'destroy target', 'destroy files'
+    desc 'destroy [RECIPE_NAME]', 'Destroy files based on recipe and template files'
     def destroy(target, *attributes)
       begin
         destroyer = Kanagata::Destroyer.new(target, options[:config], attributes)
